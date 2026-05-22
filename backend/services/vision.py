@@ -1,6 +1,5 @@
 import anthropic
 import base64
-import imghdr
 import json
 import os
 
@@ -27,15 +26,16 @@ PROMPT = """
 """
 
 def get_media_type(image_bytes: bytes) -> str:
-    import imghdr, io
-    kind = imghdr.what(io.BytesIO(image_bytes))
-    mapping = {
-        "png": "image/png",
-        "jpeg": "image/jpeg",
-        "webp": "image/webp",
-        "gif": "image/gif"
-    }
-    return mapping.get(kind, "image/png")
+    if image_bytes[:8] == b'\x89PNG\r\n\x1a\n':
+        return "image/png"
+    elif image_bytes[:3] == b'\xff\xd8\xff':
+        return "image/jpeg"
+    elif image_bytes[:4] == b'RIFF' and image_bytes[8:12] == b'WEBP':
+        return "image/webp"
+    elif image_bytes[:6] in (b'GIF87a', b'GIF89a'):
+        return "image/gif"
+    else:
+        return "image/jpeg"
 
 def parse_lineup(image_bytes: bytes) -> dict:
     media_type = get_media_type(image_bytes)
