@@ -6,8 +6,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173",
-                   "http://127.0.0.1:5173" ],  # React 개발 서버
+    allow_origins=[
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://festival-playlist-generator.vercel.app"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
