@@ -1,0 +1,19 @@
+cat > .gitignore << 'EOF'
+# 환경변수
+backend/.env
+frontend/.env
+
+# Python
+__pycache__
+*.pyc
+
+# Node
+frontend/node_modules
+frontend/dist
+
+# 모델 파일
+backend/models/
+
+# 기타
+.DS_Store
+EOF
